@@ -28,10 +28,11 @@ export class AuthService {
           lastName: dto.lastName,
           email: dto.email,
           password: hash,
+          phone: dto.phone,
           role: dto.role ?? UserRole.USER,
         });   
         
-        const tokens = await this.signTokens(user.id, user.email, user.role);
+        const tokens = await this.signTokens(user.id, user.email, user.role, user.tokenVersion);
         // збережемо хеш refresh
         const rtHash = await bcrypt.hash(tokens.refreshToken, 10);
         await this.userService.updateHashedRt(user.id, rtHash);
@@ -46,7 +47,7 @@ export class AuthService {
         const ok = await bcrypt.compare(dto.password, user.password);
         if (!ok) throw new UnauthorizedException('Invalid credentials');
     
-        const tokens = await this.signTokens(user.id, user.email, user.role);
+        const tokens = await this.signTokens(user.id, user.email, user.role, user.tokenVersion);
         const rtHash = await bcrypt.hash(tokens.refreshToken, 10);
         await this.userService.updateHashedRt(user.id, rtHash);
 
@@ -55,6 +56,7 @@ export class AuthService {
 
     async logout(userId: string) {
         await this.userService.updateHashedRt(userId, null);
+        await this.userService.incrementTokenVersion(userId);
         return { ok: true };
     }
 
@@ -65,15 +67,15 @@ export class AuthService {
         const valid = await bcrypt.compare(refreshToken, user.hashedRt);
         if (!valid) throw new UnauthorizedException();
     
-        const tokens = await this.signTokens(user.id, user.email, user.role);
+        const tokens = await this.signTokens(user.id, user.email, user.role, user.tokenVersion);
         const rtHash = await bcrypt.hash(tokens.refreshToken, 10);
         await this.userService.updateHashedRt(user.id, rtHash);
         return tokens;
     }    
 
-    private async signTokens(userId: string, email: string, role: UserRole): Promise<Tokens> {
+    private async signTokens(userId: string, email: string, role: UserRole, version: number): Promise<Tokens> {
         const accessToken = await this.jwt.signAsync(
-          { userId, email, role },
+          { userId, email, role, version },
           {
             secret: this.cfg.get<string>('JWT_ACCESS_SECRET'),
             expiresIn: this.cfg.get<string>('JWT_ACCESS_TTL') || '15m',

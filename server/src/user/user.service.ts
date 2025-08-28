@@ -10,7 +10,7 @@ export class UserService {
         return await this.prisma.user.findUnique({ where: { email } });
     }
 
-    async create(data: { firstName: string; lastName: string; email: string; password: string; role?: UserRole }) {
+    async create(data: { firstName: string; lastName: string; email: string; password: string; role?: UserRole, phone: string }) {
         return await this.prisma.user.create({ data });
     }
 
@@ -21,4 +21,12 @@ export class UserService {
     async findById(id: string) {
         return await this.prisma.user.findUnique({ where: { id } });
     }
+
+    async incrementTokenVersion(userId: string) {
+        return await this.prisma.user.update({
+          where: { id: userId },
+          data: { tokenVersion: { increment: 1 } },
+        });
+      }
+      
 }
