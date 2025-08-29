@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserRole } from '@prisma/client';
 import { PrismaService } from 'prisma/prisma.service';
 
@@ -19,7 +19,13 @@ export class UserService {
     }
 
     async findById(id: string) {
-        return await this.prisma.user.findUnique({ where: { id } });
+        const user = await this.prisma.user.findUnique({ where: { id } });
+
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+
+        return user;
     }
 
     async incrementTokenVersion(userId: string) {

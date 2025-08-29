@@ -89,5 +89,11 @@ export class AuthService {
           },
         );
        return { accessToken, refreshToken};
-    }    
+    }
+    
+    async getMe(userId: string) {
+      const user = await this.userService.findById(userId);
+      const {password, hashedRt, tokenVersion, ...result} = user;
+      return result;
+    }
 }

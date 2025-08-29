@@ -13,11 +13,17 @@ interface JwtPayload {
   exp: number;
 }
 
+
+const accessFromCookie = (req: any) => req?.cookies?.access_token ?? null;
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(cfg: ConfigService, private readonly users: UserService,) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        accessFromCookie,
+        ExtractJwt.fromAuthHeaderAsBearerToken(), // резерв
+      ]),
       secretOrKey: cfg.get<string>('JWT_ACCESS_SECRET'),
     });
   }
@@ -26,7 +32,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     const user = await this.users.findById(payload.userId);
     if (!user) throw new UnauthorizedException();
 
-    if (payload.version !== user.tokenVersion) {
+    if (payload.version !== undefined && payload.version !== user.tokenVersion) {
       throw new UnauthorizedException();
     }
     // payload: { sub, email, role, iat, exp }
