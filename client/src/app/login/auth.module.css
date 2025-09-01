@@ -1,3 +1,5 @@
+@reference "../globals.css";
+
 .form { 
     @apply max-w-sm mx-auto p-6 border rounded-2xl shadow grid gap-3 bg-white; 
 }

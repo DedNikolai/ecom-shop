@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   async rewrites() {
     return [
-      { source: "/api/:path*", destination: "http://localhost:3001/:path*" },
+      { source: "/_api/:path*", destination: `${process.env.BACKEND_API_URL}/:path*` },
     ];
   },
 };
