@@ -18,19 +18,19 @@
     @Post('register')
     @HttpCode(HttpStatus.CREATED)
     async register(@Body() dto: RegisterDto, @Res({passthrough: true}) res: Response) {
-      const { accessToken, refreshToken } = await this.authService.register(dto);
+      const { accessToken, refreshToken, user } = await this.authService.register(dto);
       res.cookie('access_token', accessToken, accessOpts);
       res.cookie('refresh_token', refreshToken, refreshOpts);
-      return { ok: true };
+      return user;
     }
 
     @Post('login')
     @HttpCode(HttpStatus.OK)
     async login(@Body() dto: LoginDto, @Res({ passthrough: true }) res: Response) {
-      const { accessToken, refreshToken } = await this.authService.login(dto);
+      const { accessToken, refreshToken, user} = await this.authService.login(dto);
       res.cookie('access_token', accessToken, accessOpts);
       res.cookie('refresh_token', refreshToken, refreshOpts);
-      return { ok: true };
+      return user;
     }
 
     @Post('logout')
