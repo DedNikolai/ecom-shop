@@ -7,7 +7,23 @@ import { UserRole } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
 
-type Tokens = { accessToken: string; refreshToken: string };
+type Tokens = {
+  accessToken: string,
+  refreshToken: string,
+}
+
+type PublicUser  = { 
+  id: string,
+  firstName: string
+  lastName: string
+  email: string
+  phone: string | null,
+  role: UserRole
+  createdAt: Date
+  updatedAt: Date
+}
+
+type AuthResponse = { user: PublicUser  } & Tokens;
 
 @Injectable()
 export class AuthService {
@@ -17,7 +33,7 @@ export class AuthService {
         private cfg: ConfigService,
       ) {}
 
-     async register(dto: RegisterDto): Promise<Tokens> {
+     async register(dto: RegisterDto): Promise<AuthResponse> {
         const exists = await this.userService.findByEmail(dto.email);
     
         if (exists) throw new ForbiddenException('Email in use');
@@ -32,26 +48,28 @@ export class AuthService {
           role: dto.role ?? UserRole.USER,
         });   
         
+        const { password, hashedRt, tokenVersion, ...rest } = user;
         const tokens = await this.signTokens(user.id, user.email, user.role, user.tokenVersion);
         // збережемо хеш refresh
         const rtHash = await bcrypt.hash(tokens.refreshToken, 10);
         await this.userService.updateHashedRt(user.id, rtHash);
-        return tokens;    
+        return {user: rest, ...tokens};    
 
     }
 
-    async login(dto: LoginDto): Promise<Tokens> {
+    async login(dto: LoginDto): Promise<AuthResponse> {
         const user = await this.userService.findByEmail(dto.email);
         if (!user) throw new UnauthorizedException('Invalid credentials');
     
         const ok = await bcrypt.compare(dto.password, user.password);
         if (!ok) throw new UnauthorizedException('Invalid credentials');
     
+        const { password, hashedRt, tokenVersion, ...rest } = user;
         const tokens = await this.signTokens(user.id, user.email, user.role, user.tokenVersion);
         const rtHash = await bcrypt.hash(tokens.refreshToken, 10);
         await this.userService.updateHashedRt(user.id, rtHash);
 
-        return tokens;
+        return {user: rest, ...tokens};
     }
 
     async logout(userId: string) {
@@ -60,7 +78,7 @@ export class AuthService {
         return { ok: true };
     }
 
-    async refresh(userId: string, refreshToken: string): Promise<Tokens> {
+    async refresh(userId: string, refreshToken: string): Promise<AuthResponse> {
         const user = await this.userService.findById(userId);
         if (!user || !user.hashedRt) throw new UnauthorizedException();
     
@@ -70,7 +88,7 @@ export class AuthService {
         const tokens = await this.signTokens(user.id, user.email, user.role, user.tokenVersion);
         const rtHash = await bcrypt.hash(tokens.refreshToken, 10);
         await this.userService.updateHashedRt(user.id, rtHash);
-        return tokens;
+        return {user, ...tokens};
     }    
 
     private async signTokens(userId: string, email: string, role: UserRole, version: number): Promise<Tokens> {

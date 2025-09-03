@@ -1,0 +1,17 @@
+import { Role } from "./role";
+
+export type LoginType = {
+    email: string;
+    password: string;
+}
+
+export type UserType = {
+    id: string,
+    firstName: string
+    lastName: string
+    email: string
+    phone: string | null,
+    role: Role
+    createdAt: Date
+    updatedAt: Date
+}
