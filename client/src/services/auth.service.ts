@@ -1,7 +1,19 @@
 import { api } from "@/lib/axios";
-import { LoginType } from "@/types/login";
-import { UserType } from "@/types/user";
+import { AuthUserType, LoginType } from "@/types/auth";
+import toast from "react-hot-toast";
 
 export async function login(data: LoginType) {
-    const response = await api.post<UserType>('/auth/login', data);
+    try {
+        const response = await api.post<AuthUserType>('/auth/login', data);
+
+        if(response.status === 200) {
+            toast.success('Authorization Success')
+            return response.data
+        }
+
+        toast.error('Authorization Failed');
+        return null
+    } catch(error: any) {
+        toast.error(error.message)
+    }
 }
