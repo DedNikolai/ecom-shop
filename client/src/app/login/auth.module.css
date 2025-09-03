@@ -1,20 +1,14 @@
 @reference "../globals.css";
 
-.form { 
-    @apply max-w-sm mx-auto p-6 border rounded-2xl shadow grid gap-3 bg-white; 
+.wrapper { 
+    @apply grid place-items-center min-h-[60dvh]; 
 }
-.title { 
-    @apply text-xl font-semibold mb-2; 
+
+.form {
+    @apply max-w-sm w-full mx-auto p-6 border rounded-2xl shadow grid gap-4 bg-white
 }
-.row { 
-    @apply grid gap-1; 
+
+.title {
+    @apply text-xl font-semibold
 }
-.input { 
-    @apply border rounded-lg p-2; 
-}
-.btn { 
-    @apply bg-black text-white rounded-lg py-2; 
-}
-.error { 
-    @apply text-red-600 text-sm; 
-}
+

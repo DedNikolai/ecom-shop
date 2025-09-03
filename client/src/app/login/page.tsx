@@ -1,16 +1,13 @@
 "use client";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-// якщо вже маєш свої шад-сн компоненти — заміни на них
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { api } from "@/lib/axios";
+import { useAuth } from "@/hooks/useAuth";
+import styles from './auth.module.css';
 
 const schema = z.object({
   email: z.string().email(),
@@ -19,36 +16,20 @@ const schema = z.object({
 type Values = z.infer<typeof schema>;
 
 export default function LoginPage() {
-  const router = useRouter();
-  const sp = useSearchParams();
-  const next = sp.get("next") || "/";
-
-  const qc = useQueryClient();
   const form = useForm<Values>({
     resolver: zodResolver(schema),
     defaultValues: { email: "", password: "" },
   });
 
-  const loginMutation = useMutation({
-    mutationFn: async (values: Values) => {
-      // бекенд ставить HttpOnly cookies
-      await api.post("/auth/login", values);
-    },
-    onSuccess: async () => {
-      // оновити стан сесії
-      await qc.invalidateQueries({ queryKey: ["me"] });
-      router.replace(next); // повертаємось туди, куди не пустило, або "/" 
-    },
-    // (опційно) onError: (e) => toast/error UI
-  });
+  const mutation = useAuth()
 
-  const onSubmit = (values: Values) => loginMutation.mutate(values);
+  const onSubmit = (values: Values) => mutation.mutate(values);
 
   return (
-    <div className="grid place-items-center min-h-[60dvh]">
+    <div className={styles.wrapper}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-sm w-full mx-auto p-6 border rounded-2xl shadow grid gap-4 bg-white">
-          <h1 className="text-xl font-semibold">Вхід</h1>
+        <form onSubmit={form.handleSubmit(onSubmit)} className={styles.form}>
+          <h1 className={styles.title}>Вхід</h1>
 
           <FormField name="email" control={form.control} render={({ field }) => (
             <FormItem>
@@ -66,8 +47,8 @@ export default function LoginPage() {
             </FormItem>
           )} />
 
-          <Button type="submit" disabled={loginMutation.isPending}>
-            {loginMutation.isPending ? "Входимо..." : "Увійти"}
+          <Button type="submit" disabled={mutation.isPending}>
+            {mutation.isPending ? "Входимо..." : "Увійти"}
           </Button>
         </form>
       </Form>

@@ -14,6 +14,17 @@ export async function login(data: LoginType) {
         toast.error('Authorization Failed');
         return null
     } catch(error: any) {
-        toast.error(error.message)
+        toast.error('Invalid email or password')
+    }
+}
+export async function authMe(): Promise<AuthUserType | undefined> {
+    try {
+        const response = await api.get<AuthUserType>('/auth/me')
+
+        if (response.status === 200) {
+            return response.data
+        }
+    } catch(error: any) {
+        console.log(error.message)
     }
 }

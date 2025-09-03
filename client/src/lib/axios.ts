@@ -9,13 +9,19 @@ export const api = axios.create({
 let isRefreshing = false;
 let pendingRequests: Array<() => void> = [];
 
+const shouldSkipRefresh = (url?: string) => {
+  if (!url) return false;
+  // url може бути відносним типу "/_api/auth/refresh" або вже переписаним
+  return url.includes("/auth/refresh") || url.includes("/auth/logout");
+};
+
 api.interceptors.response.use(
   (res) => res,
   async (error) => {
     const original = error.config;
 
     // якщо 401 і ми ще не пробували рефреш
-    if (error?.response?.status === 401 && !original._retry) {
+    if (error?.response?.status === 401 && !original._retry && !shouldSkipRefresh(original?.url)) {
       if (isRefreshing) {
         // чекаємо, доки хтось інший оновить
         await new Promise<void>((resolve) => pendingRequests.push(resolve));

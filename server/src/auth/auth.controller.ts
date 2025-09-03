@@ -58,7 +58,7 @@ export class AuthController {
 
   @Get('me')
   @UseGuards(JwtAuthGuard)
-  async getme(@GetUser('userId') userId: any) {
+  async getme(@GetUser('userId') userId: string) {
     return await this.authService.getMe(userId);
   }
 }
