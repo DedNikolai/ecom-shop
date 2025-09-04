@@ -1,1 +1,6 @@
-@reference "../../../globals.css";
+.header {
+    @apply border-b;
+    background-color: var(--color-bg-color-black);
+    color: #fff;
+
+}

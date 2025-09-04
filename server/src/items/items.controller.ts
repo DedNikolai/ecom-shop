@@ -11,8 +11,9 @@ export class ItemsController {
 
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles()
+  @Roles('ADMIN')
   async getItems() {
+    console.log("GET ITEMS")
     return await this.itemsService.findAll()
   }
 

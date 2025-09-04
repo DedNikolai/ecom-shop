@@ -1,12 +1,10 @@
-// БЕЗ "use client" !!!
-// Не імпортуй тут axios, toast, React тощо.
-
 import { cookies } from "next/headers";
 import type { AuthUserType } from "@/types/auth";
+import { serverRoutes } from "@/app/api/server.routes";
 
 export async function authMeServer(): Promise<AuthUserType | null> {
-  const cookieHeader = (await cookies()).toString(); // куки з поточного запиту
-  const res = await fetch(`${process.env.BACKEND_API_URL}/auth/me`, {
+  const cookieHeader = (await cookies()).toString(); 
+  const res = await fetch(`${process.env.BACKEND_API_URL}${serverRoutes._AUTH_ME}`, {
     headers: { cookie: cookieHeader },
     cache: "no-store",
   });

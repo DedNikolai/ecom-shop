@@ -2,10 +2,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify, type JWTPayload } from "jose";
 import type { Role } from "./types/role";
+import { protectedRoutes, publicRoutes } from "./app/api/client.routes";
 
-const needsAdmin = (p: string) => p === "/dashboard" || p.startsWith("/dashboard/");
-const needsUser  = (p: string) => p === "/profile"  || p.startsWith("/profile/");
-const isAuthPage = (p: string) => p === "/login" || p === "/register";
+const needsAdmin = (p: string) => p === protectedRoutes._DASHBOARD || p.startsWith(`${protectedRoutes._DASHBOARD}/`);
+const needsUser  = (p: string) => p === protectedRoutes._PROFILE  || p.startsWith(`${protectedRoutes._PROFILE}/`);
+const isAuthPage = (p: string) => p === publicRoutes._LOGIN || p === publicRoutes._REGISTER;
 
 function getAccess(req: NextRequest) {
   const name = process.env.JWT_COOKIE_NAME || "access_token";
@@ -38,7 +39,7 @@ export default async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL("/", req.nextUrl.origin));
     } catch {
       if (hasRefresh(req)) {
-        return NextResponse.redirect(new URL("/api/auth/refresh-gate", req.nextUrl.origin));
+        return NextResponse.redirect(new URL(publicRoutes._REFRESH, req.nextUrl.origin));
       }
       return NextResponse.next(); 
     }
@@ -52,9 +53,9 @@ export default async function middleware(req: NextRequest) {
   const token = getAccess(req);
   if (!token) {
     if (hasRefresh(req)) {
-      return NextResponse.redirect(new URL("/api/auth/refresh-gate", req.nextUrl.origin));
+      return NextResponse.redirect(new URL(publicRoutes._REFRESH, req.nextUrl.origin));
     }
-    return NextResponse.redirect(new URL("/login", req.nextUrl.origin));
+    return NextResponse.redirect(new URL(publicRoutes._LOGIN, req.nextUrl.origin));
   }
 
   try {
@@ -62,24 +63,24 @@ export default async function middleware(req: NextRequest) {
     const role = payload.role;
 
     if ((requiresAdmin && role !== "ADMIN") || (requiresUser && role !== "USER")) {
-      return NextResponse.redirect(new URL("/login", req.nextUrl.origin));
+      return NextResponse.redirect(new URL(publicRoutes._LOGIN, req.nextUrl.origin));
     }
     return NextResponse.next();
   } catch {
     if (hasRefresh(req)) {
-      return NextResponse.redirect(new URL("/api/auth/refresh-gate", req.nextUrl.origin));
+      return NextResponse.redirect(new URL(publicRoutes._REFRESH, req.nextUrl.origin));
     }
-    return NextResponse.redirect(new URL("/login", req.nextUrl.origin));
+    return NextResponse.redirect(new URL(publicRoutes._LOGIN, req.nextUrl.origin));
   }
 }
 
 export const config = {
   matcher: [
-    "/dashboard",
-    "/dashboard/:path*",
-    "/profile",
-    "/profile/:path*",
-    "/login",
-    "/register",
+    protectedRoutes._DASHBOARD,
+    `${protectedRoutes._DASHBOARD}/:path*`,
+    protectedRoutes._PROFILE,
+    `${protectedRoutes._PROFILE}/:path*`,
+    publicRoutes._LOGIN,
+    publicRoutes._LOGIN,
   ],
 };

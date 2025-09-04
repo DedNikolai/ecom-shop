@@ -1,3 +1,4 @@
+import { serverRoutes } from "@/app/api/server.routes";
 import axios from "axios";
 
 export const api = axios.create({
@@ -12,7 +13,7 @@ let pendingRequests: Array<() => void> = [];
 const shouldSkipRefresh = (url?: string) => {
   if (!url) return false;
   // url може бути відносним типу "/_api/auth/refresh" або вже переписаним
-  return url.includes("/auth/refresh") || url.includes("/auth/logout");
+  return url.includes(serverRoutes._AUTH_REFRESH) || url.includes(serverRoutes._AUTH_LOGOUT);
 };
 
 api.interceptors.response.use(
@@ -20,10 +21,8 @@ api.interceptors.response.use(
   async (error) => {
     const original = error.config;
 
-    // якщо 401 і ми ще не пробували рефреш
     if (error?.response?.status === 401 && !original._retry && !shouldSkipRefresh(original?.url)) {
       if (isRefreshing) {
-        // чекаємо, доки хтось інший оновить
         await new Promise<void>((resolve) => pendingRequests.push(resolve));
         original._retry = true;
         return api(original);
@@ -32,8 +31,7 @@ api.interceptors.response.use(
       try {
         isRefreshing = true;
         original._retry = true;
-        // бек має спиратися на refresh cookie
-        await api.post("/auth/refresh");
+        await api.post(serverRoutes._AUTH_REFRESH);
         pendingRequests.forEach((fn) => fn());
         pendingRequests = [];
         return api(original);

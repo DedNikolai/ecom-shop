@@ -1,4 +1,5 @@
 import { protectedRoutes, publicRoutes } from "@/app/api/client.routes";
+import { serverRoutes } from "@/app/api/server.routes";
 import { api } from "@/lib/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
@@ -14,7 +15,7 @@ export function useLogout() {
 
   return useMutation({
     mutationFn: async () => {
-      await api.post("/auth/logout");
+      await api.post(serverRoutes._AUTH_LOGOUT);
     },
     onSuccess: async () => {
       qc.setQueryData(["me"], null);

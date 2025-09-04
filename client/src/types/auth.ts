@@ -15,3 +15,5 @@ export type AuthUserType = {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type AuthRegisterType = Omit<AuthUserType, "id" | "role" | "createdAt" | "updatedAt">;
