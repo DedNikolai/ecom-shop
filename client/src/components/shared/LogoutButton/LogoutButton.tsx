@@ -5,8 +5,8 @@ export function LogoutButton() {
   const logout = useLogout();
 
   return (
-    <button onClick={() => logout.mutate()} className="underline">
-      Вийти
+    <button onClick={() => logout.mutate()}>
+      Logout
     </button>
   );
 }

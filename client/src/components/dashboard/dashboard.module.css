@@ -1,0 +1,39 @@
+@reference "../../app/globals.css";
+
+.wrapper {
+    @apply grid min-h-dvh md:grid-cols-[260px_1fr]
+
+
+}
+
+.sidebar {
+    @apply hidden border-r md:block;
+    background-color: var(--color-bg-color-white);
+}
+
+.title {
+    @apply flex h-14 items-center gap-2 px-4 font-semibold
+}
+
+.scroll {
+    @apply h-[calc(100dvh-56px)] p-2
+}
+
+.nav {
+    @apply grid gap-1;
+}
+
+.menu {
+    @apply h-5 w-5
+}
+
+.link {
+    @apply flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition
+           text-neutral-700 hover:bg-neutral-100
+}
+
+.link__active {
+    background-color: var(--color-bg-color-blask);
+    color:  var(--color-bg-color-white);
+
+}

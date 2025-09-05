@@ -28,9 +28,13 @@ export class AuthService {
       ) {}
 
      async register(dto: RegisterDto): Promise<{user: UserResponse} & Tokens> {
-        const exists = await this.userService.findByEmail(dto.email);
+        const emailExists = await this.userService.findByEmail(dto.email);
     
-        if (exists) throw new ForbiddenException('Email in use');
+        if (emailExists) throw new ForbiddenException('Email in use');
+
+        const phoneExists = await this.userService.findByPhoneNumber(dto.phone);
+
+        if (phoneExists) throw new ForbiddenException('Phone number is in use');
     
         const hash = await bcrypt.hash(dto.password, 10);
         const user = await this.userService.create({

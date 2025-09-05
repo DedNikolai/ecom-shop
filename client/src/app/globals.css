@@ -79,6 +79,7 @@
   --sidebar-ring: oklch(0.708 0 0);
   --color-bg-color-black: #000;
   --color-bg-color-main: #fff;
+  --color-bg-color-white: #fff;
   --color-bg-color-secondary: #eee;
   --color-link: oklch(54.6% 0.245 262.881)
 }

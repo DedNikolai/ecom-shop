@@ -1,23 +1,11 @@
-import { LogoutButton } from "@/components/shared/LogoutButton/LogoutButton";
 import type { Metadata } from "next";
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
 
 export const metadata: Metadata = {
-  title: "DashBoard",
-  description: "DashBoard",
+  title: "Dashboard",
+  description: "E-commerce admin panel",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <main>
-        <div className="flex justify-between p-5">
-          <div>Menu</div>
-          <LogoutButton />
-        </div>
-        {children}
-    </main>
-  );
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return <DashboardLayout>{children}</DashboardLayout>;
 }

@@ -28,8 +28,13 @@ async function verifyJWT_HS(token: string) {
 }
 
 export default async function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+  const { pathname, search } = req.nextUrl;
 
+  const requiresAdmin = needsAdmin(pathname);
+  const requiresUser  = needsUser(pathname);
+  const current = pathname + (search || ""); // ← куди повернутись після refresh
+
+  // --- /login | /register ---
   if (isAuthPage(pathname)) {
     const token = getAccess(req);
     if (!token) return NextResponse.next();
@@ -39,21 +44,23 @@ export default async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL("/", req.nextUrl.origin));
     } catch {
       if (hasRefresh(req)) {
-        return NextResponse.redirect(new URL(publicRoutes._REFRESH, req.nextUrl.origin));
+        const url = new URL(publicRoutes._REFRESH, req.nextUrl.origin);
+        url.searchParams.set("next", "/");     // ← для auth-сторінок хочемо на головну
+        return NextResponse.redirect(url);
       }
-      return NextResponse.next(); 
+      return NextResponse.next();
     }
   }
 
-  const requiresAdmin = needsAdmin(pathname);
-  const requiresUser  = needsUser(pathname);
-
+  // --- захищені ---
   if (!requiresAdmin && !requiresUser) return NextResponse.next();
 
   const token = getAccess(req);
   if (!token) {
     if (hasRefresh(req)) {
-      return NextResponse.redirect(new URL(publicRoutes._REFRESH, req.nextUrl.origin));
+      const url = new URL(publicRoutes._REFRESH, req.nextUrl.origin);
+      url.searchParams.set("next", current);   // ← ДОДАЛИ
+      return NextResponse.redirect(url);
     }
     return NextResponse.redirect(new URL(publicRoutes._LOGIN, req.nextUrl.origin));
   }
@@ -68,7 +75,9 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next();
   } catch {
     if (hasRefresh(req)) {
-      return NextResponse.redirect(new URL(publicRoutes._REFRESH, req.nextUrl.origin));
+      const url = new URL(publicRoutes._REFRESH, req.nextUrl.origin);
+      url.searchParams.set("next", current);   // ← ДОДАЛИ
+      return NextResponse.redirect(url);
     }
     return NextResponse.redirect(new URL(publicRoutes._LOGIN, req.nextUrl.origin));
   }
@@ -81,6 +90,7 @@ export const config = {
     protectedRoutes._PROFILE,
     `${protectedRoutes._PROFILE}/:path*`,
     publicRoutes._LOGIN,
-    publicRoutes._LOGIN,
+    publicRoutes._REGISTER, 
   ],
 };
+

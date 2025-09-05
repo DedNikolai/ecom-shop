@@ -19,8 +19,8 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   async register(@Body() dto: RegisterDto, @Res({passthrough: true}) res: Response) {
     const { accessToken, refreshToken, user } = await this.authService.register(dto);
-    res.cookie('access_token', accessToken, accessOpts);
-    res.cookie('refresh_token', refreshToken, refreshOpts);
+    // res.cookie('access_token', accessToken, accessOpts);
+    // res.cookie('refresh_token', refreshToken, refreshOpts);
     return user;
   }
 
