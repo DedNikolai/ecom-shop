@@ -10,7 +10,7 @@ export type AuthUserType = {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string | null;
+  phone: string;
   role: Role;
   createdAt: Date;
   updatedAt: Date;

@@ -13,7 +13,7 @@ import Link from "next/link";
 
 const schema = z.object({
   email: z.email('Email required'),
-  password: z.string().min(6, 'To short'),
+  password: z.string('Password required').min(6, 'To short'),
 });
 type Values = z.infer<typeof schema>;
 
@@ -22,6 +22,8 @@ export default function LoginPage() {
     resolver: zodResolver(schema),
     defaultValues: { email: "", password: "" },
   });
+
+  const {formState: {errors}} = form;
 
   const mutation = useAuth()
 
@@ -35,26 +37,20 @@ export default function LoginPage() {
 
           <FormField name="email" control={form.control} render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel className={styles.label}>{errors.password ? <FormMessage /> : 'Email'}</FormLabel>
               <FormControl><Input placeholder="you@mail.com" {...field} /></FormControl>
-              <div className={styles.error}>
-                <FormMessage />
-              </div>
             </FormItem>
           )} />
 
           <FormField name="password" control={form.control} render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel className={styles.label}>{errors.password ? <FormMessage /> : 'Password'}</FormLabel>
               <FormControl><Input type="password" placeholder="••••••••" {...field} /></FormControl>
-              <div className={styles.error}>
-                <FormMessage />
-              </div>
             </FormItem>
           )} />
 
           <Button type="submit" disabled={mutation.isPending} className={styles.btn}>
-            {mutation.isPending ? "Входимо..." : "Увійти"}
+            {mutation.isPending ? "Loading..." : "Submit"}
           </Button>
 
           <div className="mt-4 text-sm flex justify-between">

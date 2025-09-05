@@ -24,7 +24,7 @@
     cursor: pointer;
 }
 
-.error {
+.label {
     @apply h-[10px]
 }
 

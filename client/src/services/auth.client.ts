@@ -35,13 +35,13 @@ export async function register(data: AuthRegisterType) {
     try {
         const response = await api.post(serverRoutes._AUTH_REGISTER, data);
 
-        if (response.status === 200) {
+        if (response.status === 201) {
             toast.success('Registration success, please login')
             return response.data
         }
     } catch(error: any) {
         console.log(error);
-        toast.error(error.message)
+        toast.error(error.response.data.message)
     }
 }
 
