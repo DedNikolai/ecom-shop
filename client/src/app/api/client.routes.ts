@@ -1,6 +1,7 @@
 export const protectedRoutes = {
     _HOME: '/',
     _DASHBOARD: '/dashboard',
+    _DASHBOARD_ITEMS: '/dashboard/items',
     _PROFILE: '/profile',
 }
 

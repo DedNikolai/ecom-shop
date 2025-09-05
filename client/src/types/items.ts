@@ -5,3 +5,5 @@ export type ItemsType = {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type UpdateItemDto = Omit<ItemsType, 'id' | 'createdAt' | 'updatedAt'>
