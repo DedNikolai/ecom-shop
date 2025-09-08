@@ -1,16 +1,22 @@
 'use client'
 
-import { useItems } from "@/hooks/useItems";
+import { useItems } from "@/hooks/items/useItems";
 import { Item } from "@/components/item/Item";
+import { CreateItemDialog } from "@/components/item/CreateItemDialog";
+import styles from './items.module.css';
+import { ItemSkeleton } from "@/components/item/ItemSkeleton";
 
 export default function Items() {
-    const {data, isLoading} = useItems();
+    const {data, isLoading, isFetching } = useItems();
 
     return (
         <>
-            <h1 className="text-[28px] font-bold">ITEMS</h1>
+            <div className={styles.header}>
+                <h1 className={styles.title}>ITEMS</h1>
+                <CreateItemDialog />
+            </div>
             {
-                isLoading ? <div>Loading...</div> :
+                (isLoading || isFetching) ? Array.from({ length: 4 }).map((_, index) => <ItemSkeleton key={index}/>) :
                 <ul>
                     {
                         data?.map((item, index) => (
