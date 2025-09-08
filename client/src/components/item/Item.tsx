@@ -4,17 +4,17 @@ import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PencilIcon, XIcon, CheckIcon } from "lucide-react";
+import { PencilIcon, XIcon, CheckIcon, TrashIcon } from "lucide-react";
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
-import { useUpdateItem } from "@/hooks/useUpdateItem";
+import { useUpdateItem } from "@/hooks/items/useUpdateItem";
 import type { ItemsType } from "@/types/items";
+import { useRemoveItem } from "@/hooks/items/useRemoveItem";
 
-// shadcn Card не має CardAction за замовчуванням — зробимо свою праворуч у заголовку
 function CardAction({ children }: { children: React.ReactNode }) {
   return <div className="ml-auto flex items-center gap-2">{children}</div>;
 }
@@ -28,6 +28,13 @@ type FormValues = z.infer<typeof schema>;
 export function Item({ item }: { item: ItemsType }) {
   const [editing, setEditing] = useState(false);
   const update = useUpdateItem(item.id);
+  const remove = useRemoveItem(item.id);
+
+  const onRemoveItem = () => {
+    if(confirm('Remove Item')) {
+      remove.mutate();
+    }
+  }
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -60,6 +67,14 @@ export function Item({ item }: { item: ItemsType }) {
                 onClick={() => setEditing(true)}
               >
                 <PencilIcon className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Edit"
+                onClick={() => onRemoveItem()}
+              >
+                <TrashIcon className="h-4 w-4" />
               </Button>
             </CardAction>
           </>

@@ -3,7 +3,7 @@ import { ItemsType } from '@/types/items';
 import { useQuery } from '@tanstack/react-query';
 
 export function useItems() {
-    const {data, isLoading} = useQuery<ItemsType[] | null>({
+    const {data, isLoading, isFetching} = useQuery<ItemsType[] | null>({
         queryKey: ['items'],
         queryFn: async () => {
             return await fetchItems()
@@ -11,5 +11,5 @@ export function useItems() {
         refetchOnWindowFocus: false
     })
 
-    return {data, isLoading}
+    return {data, isLoading, isFetching}
 }
