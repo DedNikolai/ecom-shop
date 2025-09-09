@@ -4,5 +4,6 @@ export const serverRoutes = {
     _AUTH_ME: '/auth/me',
     _AUTH_LOGIN: '/auth/login',
     _AUTH_REGISTER: '/auth/register',
-    _ITEMS: '/items'
+    _ITEMS: '/items',
+    _USERS_ME: '/users/me'
 }

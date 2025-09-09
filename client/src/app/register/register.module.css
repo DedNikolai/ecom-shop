@@ -20,7 +20,7 @@
 }
 
 .btn {
-    background-color: var(--color-bg-color-black);
+    background-color: var( --color-bg-element-main);
     cursor: pointer;
 }
 

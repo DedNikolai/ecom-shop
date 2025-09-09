@@ -1,0 +1,5 @@
+@reference "../../app/globals.css";
+
+.btn {
+    background-color: var(--color-bg-element-main);
+}

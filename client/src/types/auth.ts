@@ -1,19 +1,9 @@
 import { Role } from "./role";
+import { UserType } from "./user";
 
 export type LoginType = {
     email: string;
     password: string;
 }
 
-export type AuthUserType = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  role: Role;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export type AuthRegisterType = Omit<AuthUserType, "id" | "role" | "createdAt" | "updatedAt">;
+export type AuthRegisterType = Omit<UserType, "id" | "role" | "createdAt" | "updatedAt">;

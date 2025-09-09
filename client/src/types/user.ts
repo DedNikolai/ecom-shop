@@ -10,8 +10,10 @@ export type UserType = {
     firstName: string
     lastName: string
     email: string
-    phone: string | null,
+    phone: string,
     role: Role
     createdAt: Date
     updatedAt: Date
 }
+
+export type UpdateUserType = Omit<UserType, 'id' | 'role' | 'createdAt' | 'updatedAt'>
