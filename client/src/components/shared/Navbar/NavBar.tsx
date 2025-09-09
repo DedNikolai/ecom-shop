@@ -16,7 +16,7 @@ export default function NavBar({auth}: NavbarTypes) {
 
     return (
         <header className={styles.header}>
-            <nav className="container mx-auto flex items-center gap-4 p-3">
+            <nav className="container w-[100%] mx-auto flex items-center gap-4 p-[10px]">
                 <Link href={publicRoutes._HOME}>Home</Link>
 
                 <div className="ml-auto flex gap-3">

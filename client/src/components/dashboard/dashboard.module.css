@@ -33,7 +33,7 @@
 }
 
 .link__active {
-    background-color: var(--color-bg-color-blask);
+    background-color: var(--color-bg-element-main);
     color:  var(--color-bg-color-white);
 
 }

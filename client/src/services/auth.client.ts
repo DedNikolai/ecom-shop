@@ -1,11 +1,12 @@
 import { serverRoutes } from "@/app/api/server.routes";
 import { api } from "@/lib/axios";
-import { AuthRegisterType, AuthUserType, LoginType } from "@/types/auth";
+import { AuthRegisterType, LoginType } from "@/types/auth";
+import { UserType } from "@/types/user";
 import toast from "react-hot-toast";
 
 export async function login(data: LoginType) {
     try {
-        const response = await api.post<AuthUserType>(serverRoutes._AUTH_LOGIN, data);
+        const response = await api.post<UserType>(serverRoutes._AUTH_LOGIN, data);
 
         if(response.status === 200) {
             toast.success('Authorization Success')
@@ -19,9 +20,9 @@ export async function login(data: LoginType) {
     }
 }
 
-export async function authMe(): Promise<AuthUserType | undefined> {
+export async function authMe(): Promise<UserType | undefined> {
     try {
-        const response = await api.get<AuthUserType>(serverRoutes._AUTH_ME)
+        const response = await api.get<UserType>(serverRoutes._AUTH_ME)
 
         if (response.status === 200) {
             return response.data

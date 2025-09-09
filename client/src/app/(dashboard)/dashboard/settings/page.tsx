@@ -1,6 +1,6 @@
 import Profile from "@/components/profile/Profile";
 
-export default function ProfilePage() {
+export default function SettingsPage() {
 
   return (
     <Profile />

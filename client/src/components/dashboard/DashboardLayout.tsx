@@ -31,7 +31,7 @@ const NAV: NavItem[] = [
   { href: "/dashboard/discounts", label: "Discounts", icon: <BadgePercent className="h-4 w-4" /> },
   { href: "/dashboard/shipping", label: "Shipping", icon: <Truck className="h-4 w-4" /> },
   { href: "/dashboard/analytics", label: "Analytics", icon: <BarChart2 className="h-4 w-4" /> },
-  { href: "/dashboard/settings", label: "Settings", icon: <Settings className="h-4 w-4" /> },
+  { href: protectedRoutes._DASHBOARD_SETTINGS, label: "Settings", icon: <Settings className="h-4 w-4" /> },
   { href: publicRoutes._HOME, label: "Shop Page", icon: <ShoppingBagIcon className="h-4 w-4" /> },
 ];
 
@@ -46,7 +46,7 @@ function SideLink({ href, label, icon, exact }: NavItem) {
       className={
         "flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition " +
         (active
-          ? "bg-[var(--color-bg-color-black)] text-white"
+          ? "bg-[var(--color-bg-element-main)] text-white"
           : "text-neutral-700 hover:bg-neutral-100")
       }
     >
@@ -119,7 +119,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <DropdownMenuLabel>My account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link href="/dashboard/settings">Settings</Link>
+                  <Link href={protectedRoutes._DASHBOARD_SETTINGS}>Settings</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>

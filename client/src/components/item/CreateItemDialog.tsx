@@ -14,6 +14,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { useCreateItem } from "@/hooks/items/useCreateItem";
 import { Loader2 } from "lucide-react";
+import styles from './itemdialog.module.css';
 
 const schema = z.object({
   title: z.string('Title is required').trim().min(3, "At least 3 symbols"),
@@ -51,7 +52,7 @@ export function CreateItemDialog() {
       }}
     >
       <DialogTrigger asChild>
-        <Button>Create Item</Button>
+        <Button className={styles.btn}>Create Item</Button>
       </DialogTrigger>
 
       <DialogContent>
@@ -110,7 +111,7 @@ export function CreateItemDialog() {
               <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={create.isPending}>
                 Cancel
               </Button>
-              <Button type="submit" disabled={!form.formState.isValid || create.isPending}>
+              <Button className={styles.btn} type="submit" disabled={!form.formState.isValid || create.isPending}>
                 {create.isPending ? "Creating..." : "Create"}
               </Button>
             </div>
