@@ -10,6 +10,7 @@ import { CategoryModule } from './category/category.module';
 import { FileModule } from './file/file.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { join } from 'path';
     }),
     ConfigModule.forRoot({isGlobal: true}), 
     ItemsModule, PrismaModule, UserModule, AuthModule, 
-    CategoryModule, FileModule,
+    CategoryModule, FileModule, ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],
