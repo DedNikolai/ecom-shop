@@ -22,7 +22,6 @@ export function ImagePickerDialog({ scope, value, onSelect, trigger }: Props) {
   const [open, setOpen] = useState(false);
   const { data, isLoading } = useImageList(scope);
   const upload = useUploadImage(scope);
-  console.log(data)
 
   return (
     <Dialog open={open} onOpenChange={(o) => !upload.isPending && setOpen(o)}>

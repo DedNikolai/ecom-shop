@@ -67,6 +67,58 @@ export default function NewCategoryPage() {
                   </FormItem>
                 )}
               />
+              
+              {/* PHOTO */}
+              <FormField
+                control={form.control}
+                name="photo"
+                render={({ field, fieldState }) => {
+                  const value = field.value ?? "";
+                  const placeholder = "/images/placeholder-category.png"; // свій шлях/URL
+
+                  return (
+                    <FormItem>
+                      <FormLabel>Photo</FormLabel>
+
+                      {/* приховане поле, яке піде на сервер */}
+                      <input type="hidden" name={field.name} value={value} onChange={field.onChange} />
+
+                      {/* прев’ю */}
+                      <div className="flex items-start gap-4">
+                        <div className="relative h-32 w-32 overflow-hidden rounded-md border">
+                          {/* якщо немає фото — показуємо плейсхолдер */}
+                          <img
+                            src={value || placeholder}
+                            alt="Preview"
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                          <ImagePickerDialog
+                            scope="category"
+                            value={value}
+                            onSelect={(url) => field.onChange(url)}
+                            trigger={<Button type="button" variant="outline">Set photo</Button>}
+                          />
+                          {value && (
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => field.onChange("")}
+                            >
+                              Remove
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+
+                      <FormMessage>{fieldState.error?.message}</FormMessage>
+                    </FormItem>
+                  );
+                }}
+              />
+
 
               <FormField
                 control={form.control}
@@ -100,27 +152,6 @@ export default function NewCategoryPage() {
                     <FormLabel>Meta description</FormLabel>
                     <FormControl><Textarea rows={3} placeholder="(optional)" {...field} /></FormControl>
                     <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* PHOTO */}
-              <FormField
-                control={form.control}
-                name="photo"
-                render={({ field, fieldState }) => (
-                  <FormItem>
-                    <FormLabel>Photo</FormLabel>
-                    <div className="flex gap-2">
-                      <Input readOnly value={field.value ?? ""} placeholder="Choose or upload…" />
-                      <ImagePickerDialog
-                        scope="category"
-                        value={field.value ?? ""}
-                        onSelect={(url) => field.onChange(url)}
-                        trigger={<Button type="button" variant="outline">Set photo</Button>}
-                      />
-                    </div>
-                    <FormMessage>{fieldState.error?.message}</FormMessage>
                   </FormItem>
                 )}
               />
