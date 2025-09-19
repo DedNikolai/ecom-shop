@@ -39,7 +39,6 @@ export class FileService {
       .readdirSync(dir)
       .filter((f) => /\.(png|jpe?g|webp|gif|avif)$/i.test(f));
 
-    // Публічна база URL — на який порт слухає бекенд
     const base = process.env.PUBLIC_FILES_URL || `http://localhost:3001`;
     // Повертаємо URL, які реально відкриваються в браузері
     return files.map((name) => `${base}/uploads/${relative}/${name}`);
