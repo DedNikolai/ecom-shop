@@ -1,7 +1,8 @@
 import {
   BadRequestException, Controller, Post, Param, UseInterceptors,
   UploadedFiles, Req,
-  UseGuards
+  UseGuards,
+  Get
 } from '@nestjs/common';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -14,10 +15,18 @@ import { UploadScope } from './type/upload.scope';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Scope } from 'eslint';
 
 @Controller('file')
 export class FileController {
   constructor(private readonly uploadsService: FileService) {}
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  @Get("images/:scope")
+  async list(@Param('scope') scope: 'category' | 'products',) {
+    return this.uploadsService.listImages(scope);
+  }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
@@ -90,4 +99,6 @@ export class FileController {
       items,
     };
   }
+
+  async 
 }

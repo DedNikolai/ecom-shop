@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { LogoutButton } from "../LogoutButton/LogoutButton";
-import { AuthUserType } from "@/types/auth";
 import { useSession } from "@/hooks/useSession";
 import { protectedRoutes, publicRoutes } from "@/app/api/client.routes";
 import styles from './navbar.module.css';
+import { UserType } from "@/types/user";
 
 type NavbarTypes = {
-    auth: AuthUserType | null;
+    auth: UserType | null;
 }
 
 export default function NavBar({auth}: NavbarTypes) {
