@@ -12,13 +12,14 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { ImagePickerDialog } from "@/components/images/ImagePickerDialog";
 import { useCreateCategory } from "@/hooks/categories/useCreateCategory";
 import { useRouter } from "next/navigation";
+import { Box } from "lucide-react";
 
 const schema = z.object({
   title: z.string().trim().min(2, "Min 2 characters"),
   metaTitle: z.string().trim(),
-  description: z.string().trim().min(5, "Min 5 characters"),
+  description: z.string().trim().min(10, "Min 10 characters"),
   metaDescription: z.string().trim(),
-  photo: z.string().url().or(z.string().startsWith("/uploads/")), // дозволяємо абсолютний URL або шлях
+  photo: z.string(),
   sortOrder: z.number().int().nonnegative(),
 });
 type Values = z.infer<typeof schema>;
@@ -74,7 +75,6 @@ export default function NewCategoryPage() {
                 name="photo"
                 render={({ field, fieldState }) => {
                   const value = field.value ?? "";
-                  const placeholder = "/images/placeholder-category.png"; // свій шлях/URL
 
                   return (
                     <FormItem>
@@ -86,12 +86,18 @@ export default function NewCategoryPage() {
                       {/* прев’ю */}
                       <div className="flex items-start gap-4">
                         <div className="relative h-32 w-32 overflow-hidden rounded-md border">
-                          {/* якщо немає фото — показуємо плейсхолдер */}
-                          <img
-                            src={value || placeholder}
-                            alt="Preview"
-                            className="h-full w-full object-cover"
-                          />
+                          {value ?
+                            <img
+                              src={`${process.env.NEXT_PUBLIC_API_URL}/${value}`}
+                              alt="Preview"
+                              className="h-full w-full object-cover"
+                            /> 
+                            :
+                            <div className="w-full h-full flex justify-center items-center">
+                              <Box size={100} strokeWidth={1}/>
+                            </div>                   
+                          }
+
                         </div>
 
                         <div className="flex flex-col gap-2">

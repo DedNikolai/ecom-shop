@@ -39,9 +39,9 @@ export class FileService {
       .readdirSync(dir)
       .filter((f) => /\.(png|jpe?g|webp|gif|avif)$/i.test(f));
 
-    const base = process.env.PUBLIC_FILES_URL || `http://localhost:3001`;
+    // const base = process.env.PUBLIC_FILES_URL || `http://localhost:3001`;
     // Повертаємо URL, які реально відкриваються в браузері
-    return files.map((name) => `${base}/uploads/${relative}/${name}`);
+    return files.map((name) => `uploads/${relative}/${name}`);
   }
 
   validateScope(scope: string): asserts scope is UploadScope {

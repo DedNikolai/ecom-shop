@@ -12,7 +12,7 @@ export async function fetchCategories(): Promise<Category[]> {
 export async function createCategory(dto: CreateCategory): Promise<Category | undefined> {
     try {
         const response = await api.post<Category>(serverRoutes._CATEGORIES, dto);
-        if (response.status == 200) {
+        if (response.status == 201) {
             toast.success('Category was created');
             return response.data;
         }
@@ -43,12 +43,13 @@ export async function updateCategory(id: string, dto: Category): Promise<Categor
 export async function removeCategory(id: string): Promise<void> {
     try {
         const response = await api.delete(`${serverRoutes._CATEGORIES}/${id}`);
+        console.log(response.status)
         if (response.status == 200) {
             toast.success('Category was updated');
+        } else {
+            toast.error('Category was not updated');
         }
         
-        toast.error('Category was not updated');
-
     } catch(error: any) {
         toast.error(error.response.data.message);
         console.log(error)

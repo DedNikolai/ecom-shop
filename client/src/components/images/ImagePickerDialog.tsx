@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { useImageList } from "@/hooks/files/useImageList";
 import { useUploadImage } from "@/hooks/files/useUploadImage";
 import { ImageScope } from "@/services/files.service";
-import { da } from "zod/v4/locales";
 
 type Props = {
   scope: ImageScope;
@@ -58,7 +57,7 @@ export function ImagePickerDialog({ scope, value, onSelect, trigger }: Props) {
                         setOpen(false);
                       }}
                     >
-                      <Image src={src} alt="image" fill className="object-cover" unoptimized />
+                      <Image src={`${process.env.NEXT_PUBLIC_API_URL}/${src}`} alt="image" fill className="object-cover" unoptimized />
                     </button>
                   ))}
                 </div>

@@ -6,7 +6,6 @@ import { api } from "@/lib/axios";
 export type ImageScope = "category" | "products";
 
 export async function listImages(scope: ImageScope): Promise<string[]> {
-  // очікуємо що бек віддає список урлів/шляхів з server/uploads/images
   const { data } = await api.get<string[]>(`${serverRoutes._FILE_IMAGES}/${scope}`);
   return data;
 }
