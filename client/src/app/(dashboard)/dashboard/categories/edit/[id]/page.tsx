@@ -7,26 +7,33 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea"; // якщо нема: npx shadcn@latest add textarea
+import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { ImagePickerDialog } from "@/components/images/ImagePickerDialog";
-import { useCreateCategory } from "@/hooks/categories/useCreateCategory";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Box } from "lucide-react";
+import { useUpdateCategory } from "@/hooks/categories/useUpdateCategory";
+import { useCategory } from "@/hooks/categories/useCategory";
+import { useEffect } from "react";
+import { is } from "zod/v4/locales";
+import { CategorySkeleton } from "@/components/category/CategorySkeleton";
+
 
 const schema = z.object({
   title: z.string().trim().min(2, "Min 2 characters"),
-  metaTitle: z.string().trim(),
+  metaTitle: z.string().trim().optional().or(z.literal("")),
   description: z.string().trim().min(10, "Min 10 characters"),
-  metaDescription: z.string().trim(),
+  metaDescription: z.string().trim().optional().or(z.literal("")),
   photo: z.string(),
   sortOrder: z.number().int().nonnegative(),
 });
 type Values = z.infer<typeof schema>;
 
 export default function NewCategoryPage() {
-  const create = useCreateCategory();
+  const { id } = useParams<{ id: string }>()
+  const {data, isPending} = useCategory(id);
   const router = useRouter();
+  const update = useUpdateCategory(id);
 
   const form = useForm<Values>({
     resolver: zodResolver(schema),
@@ -41,19 +48,29 @@ export default function NewCategoryPage() {
     mode: "onChange",
   });
 
+  useEffect(() => {
+    if (!data) return;
+
+    form.reset({
+      ...data, 
+      metaTitle: data?.metaTitle ?? "", 
+      metaDescription: data?.metaDescription ?? ""
+    })
+  }, [data])
+
+  if (isPending || update.isPending) return <CategorySkeleton />
+
   return (
     <div className="max-w-3xl">
       <Card>
         <CardHeader>
-          <CardTitle>Create Category</CardTitle>
+          <CardTitle>{data?.title}</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit((v) =>
-                create.mutate(v, {
-                  onSuccess: () => router.push("/dashboard/categories"),
-                })
+              onSubmit={form.handleSubmit((value) =>
+                update.mutate(value)
               )}
               className="grid gap-4"
             >
@@ -104,7 +121,7 @@ export default function NewCategoryPage() {
                           <ImagePickerDialog
                             scope="category"
                             value={value}
-                            onSelect={(path) => field.onChange(path)}
+                            onSelect={(url) => field.onChange(url)}
                             trigger={<Button type="button" variant="outline">Set photo</Button>}
                           />
                           {value && (
@@ -132,7 +149,7 @@ export default function NewCategoryPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Meta title</FormLabel>
-                    <FormControl><Input placeholder="(optional)" {...field} /></FormControl>
+                    <FormControl><Input placeholder="" {...field} /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -156,7 +173,7 @@ export default function NewCategoryPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Meta description</FormLabel>
-                    <FormControl><Textarea rows={3} placeholder="(optional)" {...field} /></FormControl>
+                    <FormControl><Textarea rows={3} placeholder="" {...field} /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -185,11 +202,12 @@ export default function NewCategoryPage() {
               />
 
               <div className="ml-auto flex gap-2">
-                <Button type="button" variant="outline" onClick={() => router.back()} disabled={create.isPending}>
+                <Button type="button" variant="outline" onClick={() => router.back()} disabled={update.isPending}>
                   Cancel
                 </Button>
-                <Button type="submit" disabled={!form.formState.isValid || create.isPending}>
-                  {create.isPending ? "Creating..." : "Create"}
+                <Button type="submit" disabled={!form.formState.isValid || update.isPending}>
+                {/* <Button type="submit">   */}
+                  {update.isPending ? "Updating..." : "Update"}
                 </Button>
               </div>
             </form>

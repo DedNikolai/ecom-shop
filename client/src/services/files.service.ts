@@ -10,10 +10,10 @@ export async function listImages(scope: ImageScope): Promise<string[]> {
   return data;
 }
 
-export async function uploadImage(file: File, scope: ImageScope): Promise<{ url: string }> {
+export async function uploadImage(file: File, scope: ImageScope): Promise<{ path: string }> {
   const fd = new FormData();
   fd.append("file", file);
-  const { data } = await api.post<{ url: string }>(`${serverRoutes._IMAGE_UPLOAD}/${scope}`, fd, {
+  const { data } = await api.post<{ path: string }>(`${serverRoutes._IMAGE_UPLOAD}/${scope}`, fd, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return data;

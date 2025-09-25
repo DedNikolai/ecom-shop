@@ -8,4 +8,5 @@ export type Category = {
     sortOrder: number;
 }
 
-export type CreateCategory = Omit<Category, "id">
+export type CreateCategory = Omit<Category, "id">;
+export type UpdateCategory = Omit<Category, "id">

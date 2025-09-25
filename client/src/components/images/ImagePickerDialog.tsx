@@ -74,8 +74,8 @@ export function ImagePickerDialog({ scope, value, onSelect, trigger }: Props) {
                   const f = e.target.files?.[0];
                   if (!f) return;
                   upload.mutate(f, {
-                    onSuccess: ({ url }) => {
-                      onSelect(url);
+                    onSuccess: ({ path }) => {
+                      onSelect(path);
                       setOpen(false);
                     },
                   });

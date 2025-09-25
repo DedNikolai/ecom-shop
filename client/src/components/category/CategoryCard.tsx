@@ -11,6 +11,7 @@ import { SERVER_API } from "@/app/api/server.routes";
 import { PencilIcon } from "lucide-react";
 import Link from "next/link";
 import { protectedRoutes } from "@/app/api/client.routes";
+import { ca } from "zod/v4/locales";
 
 export function CategoryCard({ cat }: { cat: Category }) {
   const remove = useRemoveCategory(cat.id);
@@ -19,7 +20,7 @@ export function CategoryCard({ cat }: { cat: Category }) {
     <Card className="overflow-hidden">
       <CardHeader className="flex-row items-center gap-3">
         <CardAction>
-          <Link href={protectedRoutes._CATEGORIES_EDIT}>
+          <Link href={`${protectedRoutes._CATEGORIES_EDIT}/${cat.id}`}>
             <PencilIcon className="h-4 w-4" />
           </Link>
         </CardAction>

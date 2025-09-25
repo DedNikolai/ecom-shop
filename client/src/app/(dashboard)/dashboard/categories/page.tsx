@@ -3,7 +3,7 @@
 
 import { useCategories } from "@/hooks/categories/useCategories";
 import { CategoryCard } from "@/components/category/CategoryCard";
-import { CategorySkeleton } from "@/components/category/CategorySkeleton";
+import { CategoryCardSkeleton } from "@/components/category/CategoryCardSkeleton";
 import { Button } from "@/components/ui/button";
 import styles from './categories.module.css';
 import Link from "next/link";
@@ -21,7 +21,7 @@ export default function CategoriesPage() {
 
       {isLoading || isFetching ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, i) => <CategorySkeleton key={i} />)}
+          {Array.from({ length: 6 }).map((_, i) => <CategoryCardSkeleton key={i} />)}
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
