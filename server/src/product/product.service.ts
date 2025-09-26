@@ -49,13 +49,20 @@ export class ProductService {
 
     
     
-    async getAll({ page = 1, limit = 20, categoryId }: ProductListQueryDto) {
+    async getAll({ page = 1, limit = 20, categoryId, title }: ProductListQueryDto) {
         const where: Prisma.ProductWhereInput = {};
     
         if (categoryId) {
           where.categories = { some: { id: categoryId } };
         }
-    
+
+        if (title) {
+          where.title = {
+            contains: title,
+            mode: 'insensitive',
+          };
+        }
+
         const skip = (page - 1) * limit;
     
         const [items, total] = await this.prisma.$transaction([
