@@ -19,6 +19,7 @@ export class ProductService {
               photos: dto.photos,
               sortOrder: dto.sortOrder,
               price: dto.price,
+              inStock: dto.inStock,
               categories: {
                 connect: dto.categories.map((id) => ({ id })),
               },
@@ -108,6 +109,7 @@ export class ProductService {
                 mainPhoto: dto.mainPhoto,
                 photos: dto.photos,
                 sortOrder: dto.sortOrder,
+                inStock: dto.inStock,
                 price: dto.price,
                 categories: {
                   connect: dto.categories.map((id) => ({ id })),

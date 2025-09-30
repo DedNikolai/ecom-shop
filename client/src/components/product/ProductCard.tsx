@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Edit, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { protectedRoutes } from "@/app/api/client.routes";
 
 type Props = {
   id: string;
@@ -46,7 +47,7 @@ export function ProductCard({ id, title, price, inStock, photo, onRemove }: Prop
 
       <CardFooter className="flex gap-2">
         <Button asChild size="sm" variant="outline">
-          <Link href={`/dashboard/products/edit/${id}`}>
+          <Link href={`${protectedRoutes._PRODUCTS_EDIT}/${id}`}>
             <Edit className="mr-2 h-4 w-4" /> Edit
           </Link>
         </Button>

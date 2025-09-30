@@ -15,7 +15,6 @@ import { Box } from "lucide-react";
 import { useUpdateCategory } from "@/hooks/categories/useUpdateCategory";
 import { useCategory } from "@/hooks/categories/useCategory";
 import { useEffect } from "react";
-import { is } from "zod/v4/locales";
 import { CategorySkeleton } from "@/components/category/CategorySkeleton";
 
 
@@ -29,7 +28,7 @@ const schema = z.object({
 });
 type Values = z.infer<typeof schema>;
 
-export default function NewCategoryPage() {
+export default function CreateProductPage() {
   const { id } = useParams<{ id: string }>()
   const {data, isPending} = useCategory(id);
   const router = useRouter();

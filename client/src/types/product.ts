@@ -1,12 +1,16 @@
-// src/types/products.ts
+import { Category } from "./category";
+
 export type ProductType = {
     id: string;
     title: string;
+    metaTitle?: string;
+    description: string;
+    metaDescription?: string;
     price: number;
-    inStock: boolean;
-    // photo?: string | null;
+    inStock?: boolean;
+    photos?: string[];
     mainPhoto: string;
-    categories: { id: string; title: string }[];
+    categories: Category [];
   };
   
   export type ProductListResponse = {
@@ -20,4 +24,6 @@ export type ProductType = {
       hasPrev: boolean;
     };
   };
-  
+
+  export type CreateProductType = Omit<ProductType, "id" | "categories"> | {categories: string[]};
+  export type UpdateProductType = Omit<ProductType, "id" | "categories"> | {categories: string[]};

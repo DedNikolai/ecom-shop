@@ -1,4 +1,3 @@
-// src/app/(dashboard)/dashboard/products/page.tsx
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
@@ -10,6 +9,7 @@ import { useCategories } from "@/hooks/categories/useCategories";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductCardSkeleton } from "@/components/product/ProductCardSkeleton";
 import { ProductsFilters } from "@/components/product/ProductsFilters";
+import { protectedRoutes } from "@/app/api/client.routes";
 
 const LIMIT = 10;
 
@@ -22,8 +22,7 @@ export default function ProductsPage() {
 
   const { data, isLoading, isFetching } = useProducts(params);
   const { data: categories } = useCategories();
-  const remove = useRemoveProduct(params); // invalidate with same key
-
+  const remove = useRemoveProduct(params); 
   const items = data?.items ?? [];
   const meta = data?.meta;
 
@@ -41,7 +40,7 @@ export default function ProductsPage() {
       <div className="flex items-center gap-2">
         <ProductsFilters categories={categories} onChange={onFilters} />
         <Button asChild className="ml-auto">
-          <Link href="/dashboard/products/create">Create product</Link>
+          <Link href={protectedRoutes._PRODUCTS_CREATE}>Create product</Link>
         </Button>
       </div>
 
