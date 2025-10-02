@@ -10,7 +10,7 @@ type Props = {
   id: string;
   title: string;
   price: number;
-  inStock: boolean;
+  inStock?: boolean;
   photo?: string | null;
   onRemove: (id: string) => void;
 };
@@ -25,6 +25,7 @@ export function ProductCard({ id, title, price, inStock, photo, onRemove }: Prop
             alt={title}
             fill
             className="object-contain"
+            priority
             unoptimized
           />
         ) : (
