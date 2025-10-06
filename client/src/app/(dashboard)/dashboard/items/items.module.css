@@ -1,9 +1,0 @@
-@reference "../../../globals.css";
-
-.header {
-    @apply flex items-center justify-between mb-4
-}
-
-.title {
-    @apply text-[28px] font-bold;
-}

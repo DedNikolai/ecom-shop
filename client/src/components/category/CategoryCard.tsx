@@ -1,4 +1,3 @@
-// src/components/category/CategoryCard.tsx
 "use client";
 
 import Image from "next/image";
@@ -6,12 +5,11 @@ import { Card, CardHeader, CardContent, CardAction } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { useRemoveCategory } from "@/hooks/categories/useRemoveCategory";
 import type { Category } from "@/types/category";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { SERVER_API } from "@/app/api/server.routes";
 import { PencilIcon } from "lucide-react";
 import Link from "next/link";
 import { protectedRoutes } from "@/app/api/client.routes";
-import { ca } from "zod/v4/locales";
 
 export function CategoryCard({ cat }: { cat: Category }) {
   const remove = useRemoveCategory(cat.id);
@@ -40,6 +38,9 @@ export function CategoryCard({ cat }: { cat: Category }) {
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Delete “{cat.title}”?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. The category may be affected.
+              </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>

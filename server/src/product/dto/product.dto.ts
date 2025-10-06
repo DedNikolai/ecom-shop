@@ -1,5 +1,5 @@
 import { Transform, Type } from 'class-transformer';
-import { IsEmail, IsNotEmpty, MinLength, IsString, IsOptional, IsNumber, Min, IsUrl, MaxLength, IsArray, ArrayMaxSize, ArrayMinSize, IsInt, IsUUID } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength, IsString, IsOptional, IsNumber, Min, IsUrl, MaxLength, IsArray, ArrayMaxSize, ArrayMinSize, IsInt, IsUUID, IsBoolean } from 'class-validator';
 
 export class ProductDto {
   @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
@@ -46,6 +46,10 @@ export class ProductDto {
   @IsInt({ message: 'price must be an integer' })
   @Min(0, { message: 'price cannot be negative' })
   price: number;
+
+  @IsOptional()
+  @IsBoolean()
+  inStock: boolean;
 
   @IsArray({ message: 'categories must be an array' })
   @ArrayMinSize(1, { message: 'categories must contain at least 1 id' })

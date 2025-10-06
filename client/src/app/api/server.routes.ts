@@ -8,7 +8,8 @@ export const serverRoutes = {
     _USERS_ME: '/users/me',
     _CATEGORIES: '/category',
     _IMAGE_UPLOAD: '/file/upload/images',
-    _FILE_IMAGES: '/file/images'
+    _FILE_IMAGES: '/file/images',
+    _PRODUCTS: '/products'
 }
 
 export const SERVER_API = process.env.NEXT_PUBLIC_API_URL

@@ -6,7 +6,10 @@ export const protectedRoutes = {
     _PROFILE: '/profile',
     _CATEGORIES: '/dashboard/categories',
     _CATEGORIES_EDIT: '/dashboard/categories/edit',
-    _CATEGORIES_CREATE: '/dashboard/categories/create'
+    _CATEGORIES_CREATE: '/dashboard/categories/create',
+    _PRODUCTS: '/dashboard/products',
+    _PRODUCTS_EDIT: '/dashboard/products/edit',
+    _PRODUCTS_CREATE: '/dashboard/products/create',
 }
 
 export const publicRoutes = {

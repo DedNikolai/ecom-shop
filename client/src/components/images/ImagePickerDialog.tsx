@@ -28,7 +28,7 @@ export function ImagePickerDialog({ scope, value, onSelect, trigger }: Props) {
         {trigger ?? <Button variant="outline">Set photo</Button>}
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-xl">
+      <DialogContent className="sm:max-w-xl" aria-describedby="">
         <DialogHeader>
           <DialogTitle>Select or upload image</DialogTitle>
         </DialogHeader>
