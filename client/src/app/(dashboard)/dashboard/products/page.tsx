@@ -61,9 +61,8 @@ export default function ProductsPage() {
               price={p.price}
               inStock={p.inStock}
               photo={p.mainPhoto ?? undefined}
-              onRemove={(id) => {
-                if (confirm("Delete this product?")) remove.mutate(id);
-              }}
+              onRemove={(id) => remove.mutate(id)}
+              isLoading={remove.isPending}
             />
           ))}
           {items.length === 0 && (

@@ -1,13 +1,18 @@
-// src/services/categories.ts
 import { serverRoutes } from "@/app/api/server.routes";
 import { api } from "@/lib/axios";
 import { Category, CreateCategory, UpdateCategory } from "@/types/category";
 import toast from "react-hot-toast";
+import { serverApi } from "@/lib/fetch";
 
-export async function fetchCategories(): Promise<Category[]> {
+export async function getCategories(): Promise<Category[]> {
   const { data } = await api.get<Category[]>(serverRoutes._CATEGORIES);
   return data;
 }
+
+export async function fetchCategories(): Promise<Category[]> {
+    const response = await fetch(serverApi(serverRoutes._CATEGORIES));
+    return response.json();
+  }
 
 export async function fetchCategory(id: string): Promise<Category | undefined> {
     try {
@@ -60,9 +65,9 @@ export async function removeCategory(id: string): Promise<void> {
         const response = await api.delete(`${serverRoutes._CATEGORIES}/${id}`);
         console.log(response.status)
         if (response.status == 200) {
-            toast.success('Category was updated');
+            toast.success('Category was deleted');
         } else {
-            toast.error('Category was not updated');
+            toast.error('Category was not deleted');
         }
         
     } catch(error: any) {

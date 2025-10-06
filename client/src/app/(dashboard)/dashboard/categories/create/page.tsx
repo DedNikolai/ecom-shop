@@ -125,7 +125,6 @@ export default function NewCategoryPage() {
                 }}
               />
 
-
               <FormField
                 control={form.control}
                 name="metaTitle"

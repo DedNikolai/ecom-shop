@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Edit, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { protectedRoutes } from "@/app/api/client.routes";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
 
 type Props = {
   id: string;
@@ -13,9 +14,10 @@ type Props = {
   inStock?: boolean;
   photo?: string | null;
   onRemove: (id: string) => void;
+  isLoading: boolean
 };
 
-export function ProductCard({ id, title, price, inStock, photo, onRemove }: Props) {
+export function ProductCard({ id, title, price, inStock, photo, onRemove, isLoading }: Props) {
   return (
     <Card className="overflow-hidden">
       <div className="relative h-40 bg-neutral-50">
@@ -46,15 +48,37 @@ export function ProductCard({ id, title, price, inStock, photo, onRemove }: Prop
         </Badge>
       </CardContent>
 
-      <CardFooter className="flex gap-2">
+      <CardFooter className="flex gap-2 justify-between">
         <Button asChild size="sm" variant="outline">
           <Link href={`${protectedRoutes._PRODUCTS_EDIT}/${id}`}>
             <Edit className="mr-2 h-4 w-4" /> Edit
           </Link>
         </Button>
-        <Button size="sm" variant="destructive" onClick={() => onRemove(id)}>
-          <Trash2 className="mr-2 h-4 w-4" /> Delete
-        </Button>
+        
+        <AlertDialog>
+            <AlertDialogTrigger asChild>
+            <Button variant="destructive" size="sm" disabled={isLoading}>
+                Delete
+            </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete “{title}”?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. The category may be affected.
+              </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => onRemove(id)}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  {isLoading ? "Deleting..." : "Delete"}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
       </CardFooter>
     </Card>
   );
