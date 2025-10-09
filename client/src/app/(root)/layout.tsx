@@ -15,7 +15,7 @@ export default async function RootLayout({
   const user = await authMeServer(); 
   return (
     <main>
-        <NextTopLoader showSpinner={false} color="red"/>
+        <NextTopLoader showSpinner={false} color="cyan"/>
         <NavBar auth={user} />
         {children}
     </main>
