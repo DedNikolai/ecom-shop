@@ -43,7 +43,7 @@ export class AuthService {
           email: dto.email,
           password: hash,
           phone: dto.phone,
-          role: dto.role ?? UserRole.ADMIN,
+          role: dto.role ?? UserRole.USER,
         });   
         
         const {password, tokenVersion, hashedRt, ...res} = user;
