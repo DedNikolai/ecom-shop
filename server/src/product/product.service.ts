@@ -50,11 +50,14 @@ export class ProductService {
 
     
     
-    async getAll({ page = 1, limit = 20, categoryId, title }: ProductListQueryDto) {
+    async getAll({ page = 1, limit = 20, categoryId, title, categoryUrl }: ProductListQueryDto) {
         const where: Prisma.ProductWhereInput = {};
-    
         if (categoryId) {
           where.categories = { some: { id: categoryId } };
+        }
+
+        if (categoryUrl) {
+          where.categories = { some: { url: categoryUrl } };
         }
 
         if (title) {

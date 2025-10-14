@@ -7,8 +7,9 @@ export class CategoryService {
     constructor(private prisma: PrismaService) {}
 
     async create(dto : CategoryDto) {
+        const categoryUrl = dto.url || dto.title.toLocaleLowerCase().split(' ').join('-');
         const createdCategory = await this.prisma.category.create({
-            data: {...dto}
+            data: {...dto, url: categoryUrl}
         })
 
         return createdCategory;
@@ -17,6 +18,18 @@ export class CategoryService {
     async getCategoryById(id: string) {
         const category = await this.prisma.category.findUnique({
             where: {id}
+        })
+
+        if (!category) {
+            throw new NotFoundException('Category not found')
+        }
+
+        return category;
+    }
+
+    async getCategoryByUrl(url: string) {
+        const category = await this.prisma.category.findUnique({
+            where: {url}
         })
 
         if (!category) {

@@ -21,6 +21,15 @@ const schema = z.object({
   metaDescription: z.string().trim(),
   photo: z.string(),
   sortOrder: z.number().int().nonnegative(),
+  url: z
+    .string()
+    .trim()
+    .min(3, "URL is atleast 3 symbols")
+    .regex(
+      /^[a-z0-9-]+$/,
+      "URL can only contain lowercase letters, numbers, and hyphens (no spaces or special characters)"
+    )
+  .optional(),
 });
 type Values = z.infer<typeof schema>;
 
@@ -37,6 +46,7 @@ export default function NewCategoryPage() {
       metaDescription: "",
       photo: "",
       sortOrder: 0,
+      url: ''
     },
     mode: "onChange",
   });
@@ -182,7 +192,17 @@ export default function NewCategoryPage() {
                   </FormItem>
                 )}
               />
-
+              <FormField
+                control={form.control}
+                name="url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Meta url</FormLabel>
+                    <FormControl><Input placeholder="" {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <div className="ml-auto flex gap-2">
                 <Button type="button" variant="outline" onClick={() => router.back()} disabled={create.isPending}>
                   Cancel

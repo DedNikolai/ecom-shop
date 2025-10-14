@@ -27,7 +27,7 @@ import { useState } from "react";
 
 type Props = {
   auth: any;
-  categories: { id: string; title: string }[];
+  categories: { id: string; title: string; url: string }[];
 };
 
 const menu = [
@@ -61,7 +61,7 @@ export default function ClientNavBar({ auth, categories }: Props) {
               {categories.map((cat) => (
                 <li key={cat.id}>
                   <Link
-                    href={`${publicRoutes._CATEGORY}/${cat.id}`}
+                    href={`${publicRoutes._CATEGORY}/${cat.url}`}
                     onClick={() => setOpen(false)}
                     className="block px-3 py-2 rounded-md hover:bg-neutral-100"
                   >
@@ -122,7 +122,7 @@ export default function ClientNavBar({ auth, categories }: Props) {
                       {categories.map((cat) => (
                         <Link
                           key={cat.id}
-                          href={`${publicRoutes._CATEGORY}/${cat.id}`}
+                          href={`${publicRoutes._CATEGORY}/${cat.url}`}
                           onClick={() => setIsOpen(false)} 
                           className="text-base hover:text-cyan-400 transition"
                         >

@@ -21,6 +21,15 @@ import { CategorySkeleton } from "@/components/category/CategorySkeleton";
 const schema = z.object({
   title: z.string().trim().min(2, "Min 2 characters"),
   metaTitle: z.string().trim().optional().or(z.literal("")),
+  url: z
+      .string()
+      .trim()
+      .min(3, "URL is atleast 3 symbols")
+      .regex(
+        /^[a-z0-9-]+$/,
+        "URL can only contain lowercase letters, numbers, and hyphens (no spaces or special characters)"
+      )
+      .optional(),
   description: z.string().trim().min(10, "Min 10 characters"),
   metaDescription: z.string().trim().optional().or(z.literal("")),
   photo: z.string(),
@@ -43,6 +52,7 @@ export default function CreateProductPage() {
       metaDescription: "",
       photo: "",
       sortOrder: 0,
+      url: ''
     },
     mode: "onChange",
   });
@@ -199,7 +209,17 @@ export default function CreateProductPage() {
                   </FormItem>
                 )}
               />
-
+              <FormField
+                control={form.control}
+                name="url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Meta url</FormLabel>
+                    <FormControl><Input placeholder="" {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <div className="ml-auto flex gap-2">
                 <Button type="button" variant="outline" onClick={() => router.back()} disabled={update.isPending}>
                   Cancel

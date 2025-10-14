@@ -8,6 +8,7 @@ export type ProductsQuery = {
   page?: number;
   limit?: number;
   categoryId?: string | null;
+  categoryUrl?: string | null;
   query?: string | null;
 };
 

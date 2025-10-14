@@ -29,6 +29,21 @@ export async function fetchCategory(id: string): Promise<Category | undefined> {
     
   }
 
+  export async function fetchCategoryByUrl(url: string): Promise<Category | undefined> {
+    try {
+        const response = await api.get<Category>(`${serverRoutes._CATEGORIES}/url/${url}`);
+
+        if(response.status === 200) {
+            return response.data;
+        }
+    } catch(error: any) {
+        console.log(error)
+        toast.error(error.response.data.message)
+    }
+
+    
+  }
+
 export async function createCategory(dto: CreateCategory): Promise<Category | undefined> {
     try {
         const response = await api.post<Category>(serverRoutes._CATEGORIES, dto);

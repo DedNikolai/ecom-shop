@@ -15,6 +15,12 @@ export class CategoryDto {
   metaTitle?: string;
 
   @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
+  @IsOptional()
+  @IsString({ message: 'url must be a text' })
+  @MaxLength(60, { message: 'url: max 60 symbols' })
+  url?: string;
+
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
   @IsString({ message: 'description must be a text' })
   @MinLength(10, { message: 'description: min 10 symbols' })
   @MaxLength(2000, { message: 'description: max 2000 symbols' })

@@ -10,6 +10,10 @@ export class ProductListQueryDto {
   @IsString()
   title?: string;
 
+  @IsOptional()
+  @IsString()
+  categoryUrl?: string;
+
   @Type(() => Number)
   @IsInt() @Min(1)
   page: number = 1;

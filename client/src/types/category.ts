@@ -6,6 +6,7 @@ export type Category = {
     metaDescription?: string;
     photo: string;
     sortOrder: number;
+    url?: string;
 }
 
 export type CreateCategory = Omit<Category, "id">;

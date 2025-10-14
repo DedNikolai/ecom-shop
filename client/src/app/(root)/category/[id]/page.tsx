@@ -4,16 +4,15 @@ import { useProducts } from "@/hooks/products/useProducts";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { useCategory } from "@/hooks/categories/useCategory";
 import { ProductCardSkeleton } from "@/components/product/ProductCardSkeleton";
+import { useCategoryByUrl } from "@/hooks/categories/useCategoryByUrl";
 
 const LIMIT = 16;
 
 export default function CategoryPage() {
   const { id } = useParams<{ id: string }>();
-  const { data, isLoading } = useProducts({ page: 1, limit: LIMIT, categoryId: id });
-  const category = useCategory(id)
+  const { data, isLoading } = useProducts({ page: 1, limit: LIMIT, categoryUrl: id });
+  const category = useCategoryByUrl(id)
 
   if (isLoading || category.isPending)
     return (

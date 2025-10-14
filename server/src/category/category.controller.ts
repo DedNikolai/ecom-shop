@@ -18,6 +18,11 @@ export class CategoryController {
     findOne(@Param('id') id: string) {
       return this.categoryService.getCategoryById(id);
     }
+
+    @Get('url/:query')
+    findByUrl(@Param('query') url: string) {
+      return this.categoryService.getCategoryByUrl(url);
+    }
   
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles('ADMIN')
