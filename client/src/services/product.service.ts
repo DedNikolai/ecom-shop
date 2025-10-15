@@ -69,6 +69,22 @@ export async function fetchProduct(id: string):Promise<ProductType | undefined> 
   }
 }
 
+export async function fetchProductByUrl(url: string):Promise<ProductType | undefined> {
+  try {
+    const response = await api.get(`${serverRoutes._PRODUCTS}/url/${url}`)
+
+    if (response.status === 200) {
+      return response.data;
+    }
+
+    toast.error('Cant get Product')
+
+  } catch(error: any) {
+    toast.error(error.response.data.message)
+    console.log(error)
+  }
+}
+
 export async function update(id: string, dto: UpdateProductType): Promise<ProductType | undefined> {
   try {
     const response = await api.put(`${serverRoutes._PRODUCTS}/${id}`, dto)

@@ -9,6 +9,7 @@ export class ProductListQueryDto {
   @IsOptional()
   @IsString()
   title?: string;
+  
 
   @IsOptional()
   @IsString()

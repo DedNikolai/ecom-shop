@@ -27,7 +27,7 @@ import { useState } from "react";
 
 type Props = {
   auth: any;
-  categories: { id: string; title: string; url: string }[];
+  categories: { id: string; title: string; url?: string }[];
 };
 
 const menu = [

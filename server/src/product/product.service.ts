@@ -9,6 +9,7 @@ export class ProductService {
     constructor(private prisma: PrismaService) {}
     
     async create(dto : ProductDto) {
+      const url = dto.url || dto.title.split(' ').join('-').toLocaleLowerCase();
         const product = await this.prisma.product.create({
             data: {
               title: dto.title,
@@ -20,6 +21,7 @@ export class ProductService {
               sortOrder: dto.sortOrder,
               price: dto.price,
               inStock: dto.inStock,
+              url: url,
               categories: {
                 connect: dto.categories.map((id) => ({ id })),
               },
@@ -47,6 +49,25 @@ export class ProductService {
         if (!product) throw new NotFoundException('Product not found');
         return product;
     }
+
+    async getByUrl(url: string) {
+      const product = await this.prisma.product.findUnique({
+        where: { url },
+        include: {
+          categories: {
+            select: {
+              id: true,
+              title: true,
+              photo: true,
+            },
+            orderBy: { sortOrder: 'asc' }, // необов’язково
+          },
+        },
+      });
+    
+      if (!product) throw new NotFoundException('Product not found');
+      return product;
+  }
 
     
     

@@ -20,6 +20,11 @@ export class ProductController {
     return this.productService.getById(id);
   }
 
+  @Get('url/:query')
+  getByUrl(@Param('query') query: string) {
+    return this.productService.getByUrl(query);
+  }
+
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
   @Post()

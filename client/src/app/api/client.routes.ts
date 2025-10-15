@@ -14,7 +14,7 @@ export const protectedRoutes = {
 
 export const publicRoutes = {
     _HOME: '/',
-    _CATEGORY: '/category',
+    _CATEGORY: '/catalog',
     _LOGIN: '/login',
     _REGISTER: '/register',
     _REFRESH: '/api/auth/refresh-gate'

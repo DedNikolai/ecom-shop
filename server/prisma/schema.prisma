@@ -48,6 +48,7 @@ model Product {
   sortOrder       Int      @default(0)
   price           Int
   inStock         Boolean    @default(true)
+  url             String?   @unique
   categories      Category[]   
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

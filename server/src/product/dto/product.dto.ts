@@ -51,6 +51,10 @@ export class ProductDto {
   @IsBoolean()
   inStock: boolean;
 
+  @IsOptional()
+  @IsString()
+  url?: string;
+
   @IsArray({ message: 'categories must be an array' })
   @ArrayMinSize(1, { message: 'categories must contain at least 1 id' })
   @IsUUID('4', { each: true, message: 'each category must be a valid UUID v4' })

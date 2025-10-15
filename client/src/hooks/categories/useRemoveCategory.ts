@@ -8,6 +8,7 @@ export function useRemoveCategory(id: string) {
     mutationFn: () => removeCategory(id),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["categories"] });
+      
     },
   });
 }

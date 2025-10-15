@@ -10,6 +10,7 @@ export type ProductType = {
     inStock?: boolean;
     photos?: string[];
     mainPhoto: string;
+    url: string;
     categories: Category [];
   };
   
