@@ -23,7 +23,7 @@ export class FileController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
   @Get("images/:scope")
-  async list(@Param('scope') scope: 'category' | 'products',) {
+  async list(@Param('scope') scope: 'category' | 'product',) {
     return this.uploadsService.listImages(scope);
   }
 

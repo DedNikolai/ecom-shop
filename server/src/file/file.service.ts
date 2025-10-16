@@ -3,7 +3,7 @@ import { UploadScope } from './type/upload.scope';
 import path from 'path';
 import * as fs from 'fs';
 
-type Scope = "category" | "products";
+type Scope = "category" | "product";
 
 
 @Injectable()
@@ -22,7 +22,7 @@ export class FileService {
     // у тебе папки називаються `category` та `product` (судячи з дерева)
     const map: Record<Scope, string> = {
       category: 'images/category',
-      products: 'images/product', // якщо папка саме "product", а не "products"
+      product: 'images/product', // якщо папка саме "product", а не "products"
     };
     return map[scope];
   }

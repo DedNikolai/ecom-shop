@@ -3,7 +3,7 @@ import { serverRoutes } from "@/app/api/server.routes";
 import { api } from "@/lib/axios";
 
 
-export type ImageScope = "category" | "products";
+export type ImageScope = "category" | "product";
 
 export async function listImages(scope: ImageScope): Promise<string[]> {
   const { data } = await api.get<string[]>(`${serverRoutes._FILE_IMAGES}/${scope}`);

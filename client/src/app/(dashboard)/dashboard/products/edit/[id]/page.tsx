@@ -30,7 +30,16 @@ const schema = z.object({
   inStock: z.boolean(),
   sortOrder: z.number().int().nonnegative(),
   photos: z.array(z.string()).optional(),
-  categories: z.array(z.string())
+  categories: z.array(z.string()),
+  url: z
+    .string()
+    .trim()
+    .min(3, "URL is atleast 3 symbols")
+    .regex(
+      /^[a-z0-9-]+$/,
+      "URL can only contain lowercase letters, numbers, and hyphens (no spaces or special characters)"
+    )
+  .optional(),
 });
 
 const MAX = 10;
@@ -91,6 +100,23 @@ export default function EditProductPage() {
                   </FormItem>
                 )}
               />
+                            <FormField
+                control={form.control}
+                name="url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Url</FormLabel>
+                    <FormControl>
+                      <Input 
+                        placeholder="Product url" 
+                        {...field} 
+                        value={field.value ?? ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               
               {/* PHOTO */}
               <FormField
@@ -125,7 +151,7 @@ export default function EditProductPage() {
 
                         <div className="flex flex-col gap-2">
                           <ImagePickerDialog
-                            scope="products"
+                            scope="product"
                             value={value}
                             onSelect={(path) => field.onChange(path)}
                             trigger={<Button type="button" variant="outline">Set photo</Button>}
@@ -202,7 +228,7 @@ export default function EditProductPage() {
                     {/* Кнопка додавання через діалог */}
                     <div className="mt-3">
                       <ImagePickerDialog
-                        scope="products"
+                        scope="product"
                         // value тут не обов’язковий для мульти; можна не підсвічувати
                         onSelect={addPhoto}
                         trigger={<Button type="button" variant="outline">Add photo</Button>}
